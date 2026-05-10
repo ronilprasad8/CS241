@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Assign Year Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+<div class="flex h-screen">
+    <div th:replace="~{fragments/admin-sidebar :: sidebar}"></div>
+
+    <div class="flex-1 p-8 overflow-y-auto">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Assign Year Manager</h1>
+        <div class="bg-white rounded-lg shadow-lg p-8 max-w-lg mx-auto">
+            <form th:action="@{/admin/classes/assign-teacher}" method="post">
+                <div class="mb-6">
+                    <label for="classId" class="block text-gray-700 text-sm font-bold mb-2">Select Class</label>
+                    <select name="classId" id="classId" required class="shadow-sm border rounded w-full py-2 px-3">
+                        <option value="">-- Select a Class --</option>
+                        <option th:each="class : ${classes}"
+                                th:value="${class.id}"
+                                th:text="'Year ' + ${class.yearLevel} + ${class.streamName}"></option>
+                    </select>
+                </div>
+                <div class="mb-6">
+                    <label for="teacherId" class="block text-gray-700 text-sm font-bold mb-2">Assign to Teacher</label>
+                    <select name="teacherId" id="teacherId" required class="shadow-sm border rounded w-full py-2 px-3">
+                        <option value="">-- Select a Teacher --</option>
+                        <option th:each="teacher : ${teachers}"
+                                th:value="${teacher.id}"
+                                th:text="${teacher.firstName + ' ' + teacher.lastName}"></option>
+                    </select>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg">
+                        Assign Manager
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

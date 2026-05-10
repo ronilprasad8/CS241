@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Teacher</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+<div class="flex h-screen">
+    <div th:replace="~{fragments/admin-sidebar :: sidebar}"></div>
+    <div class="flex-1 p-8 overflow-y-auto">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Add New Teacher</h1>
+        <div class="bg-white rounded-lg shadow-lg p-8 max-w-4xl mx-auto">
+            <form th:action="@{/users/save-teacher}" th:object="${userForm}" method="post">
+                <input type="hidden" th:field="*{userType}" />
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div><label class="block text-sm font-bold">First Name *</label><input type="text" th:field="*{firstName}" required class="shadow-sm border rounded w-full py-2 px-3"></div>
+                    <div><label class="block text-sm font-bold">Last Name *</label><input type="text" th:field="*{lastName}" required class="shadow-sm border rounded w-full py-2 px-3"></div>
+                    <div><label class="block text-sm font-bold">Username *</label><input type="text" th:field="*{username}" required class="shadow-sm border rounded w-full py-2 px-3"></div>
+                    <div><label class="block text-sm font-bold">Password *</label><input type="password" th:field="*{password}" required class="shadow-sm border rounded w-full py-2 px-3"></div>
+                    <div><label class="block text-sm font-bold">Date of Birth</label><input type="date" th:field="*{dateOfBirth}" class="shadow-sm border rounded w-full py-2 px-3"></div>
+                    <div><label class="block text-sm font-bold">Gender</label><select th:field="*{gender}" class="shadow-sm border rounded w-full py-2 px-3"><option value="">Select gender</option><option value="Male">Male</option><option value="Female">Female</option></select></div>
+                    <div><label class="block text-sm font-bold">Address</label><input type="text" th:field="*{address}" class="shadow-sm border rounded w-full py-2 px-3"></div>
+                    <div><label class="block text-sm font-bold">Contact Number</label><input type="text" th:field="*{contactNumber}" class="shadow-sm border rounded w-full py-2 px-3"></div>
+                    <div class="md:col-span-2"><label class="block text-sm font-bold">Email</label><input type="email" th:field="*{email}" class="shadow-sm border rounded w-full py-2 px-3"></div>
+                    <div class="md:col-span-2"><label class="block text-sm font-bold">Qualifications</label><input type="text" th:field="*{qualifications}" class="shadow-sm border rounded w-full py-2 px-3"></div>
+                </div>
+                <div class="mt-8 flex justify-end">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg">Save Teacher</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

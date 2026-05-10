@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Data</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+<div class="flex h-screen">
+    <div th:replace="~{fragments/admin-sidebar :: sidebar}"></div>
+
+    <div class="flex-1 p-8 overflow-y-auto">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Student Data Management</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-md">
+                <div class="text-sm text-gray-600">Total Students</div>
+                <div class="text-2xl font-bold text-gray-900" th:text="${totalStudents}">0</div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-md">
+                <div class="text-sm text-gray-600">Students in Filter</div>
+                <div class="text-2xl font-bold text-gray-900" th:text="${students.size()}">0</div>
+            </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-md mb-6">
+            <form th:action="@{/admin/students}" method="get" class="flex items-center space-x-4">
+                <div class="relative flex-grow">
+                    <i class="fas fa-search absolute top-3 left-3 text-gray-400"></i>
+                    <input type="text" name="searchTerm" placeholder="Enter student name or ID..." th:value="${searchTerm}"
+                           class="pl-10 pr-4 py-2 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <select id="year-select" name="year" class="border rounded-lg py-2 px-3 focus:outline-none">
+                    <option value="">Select Year</option>
+                    <option th:each="entry : ${yearStreamMap}" th:value="${entry.key}" th:text="'Year ' + ${entry.key}" th:selected="${entry.key == selectedYear}"></option>
+                </select>
+
+                <select id="stream-select" name="stream" class="border rounded-lg py-2 px-3 focus:outline-none" th:disabled="${selectedYear == null}">
+                    <option value="">Select Stream</option>
+                </select>
+
+                <button type="submit" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg">Filter</button>
+            </form>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold mb-4" th:text="|Found ${students.size()} student(s)|"></h3>
+            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-50">
+                    <tr>
+                        <th class="p-4 font-medium">Student ID</th>
+                        <th class="p-4 font-medium">Name</th>
+                        <th class="p-4 font-medium">Year</th>
+                        <th class="p-4 font-medium">Stream</th>
+                        <th class="p-4 font-medium">Gender</th>
+                        <th class="p-4 font-medium">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="student : ${students}" class="border-t border-gray-200">
+                        <td class="p-4" th:text="${student.indexNumber}"></td>
+                        <td class="p-4" th:text="${student.firstName + ' ' + student.lastName}"></td>
+                        <td class="p-4" th:text="${student.schoolClass?.yearLevel}"></td>
+                        <td class="p-4" th:text="${student.schoolClass?.streamName}"></td>
+                        <td class="p-4" th:text="${student.gender}"></td>
+                        <td class="p-4">
+                            <a th:href="@{/admin/students/view/{id}(id=${student.id})}" class="text-blue-600 hover:text-blue-800 text-sm font-semibold">View</a>
+                            <a th:href="@{/admin/students/edit/{id}(id=${student.id})}" class="text-yellow-600 hover:text-yellow-800 text-sm font-semibold">Edit</a>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const yearStreamMap = /*[[${yearStreamMap}]]*/ {};
+    const selectedYear = /*[[${selectedYear}]]*/ null;
+    const selectedStream = /*[[${selectedStream}]]*/ null;
+
+    const yearSelect = document.getElementById('year-select');
+    const streamSelect = document.getElementById('stream-select');
+
+    function updateStreamOptions(year) {
+        // Clear existing options
+        streamSelect.innerHTML = '<option value="">Select Stream</option>';
+
+        if (year && yearStreamMap[year]) {
+            streamSelect.disabled = false;
+            const streams = yearStreamMap[year];
+            streams.forEach(stream => {
+                const option = document.createElement('option');
+                option.value = stream;
+                option.text = stream;
+                if (stream === selectedStream) {
+                    option.selected = true;
+                }
+                streamSelect.appendChild(option);
+            });
+        } else {
+            streamSelect.disabled = true;
+        }
+    }
+
+    // Add event listener for when the year selection changes
+    yearSelect.addEventListener('change', (event) => {
+        const year = event.target.value;
+        updateStreamOptions(year);
+    });
+
+    // Update streams on initial page load
+    document.addEventListener('DOMContentLoaded', () => {
+        if (selectedYear) {
+            updateStreamOptions(selectedYear);
+        }
+    });
+    /*]]>*/
+</script>
+
+</body>
+</html>

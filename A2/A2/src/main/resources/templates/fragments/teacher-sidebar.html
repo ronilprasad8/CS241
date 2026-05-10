@@ -1,0 +1,25 @@
+<div th:fragment="sidebar" class="w-64 bg-gray-800 text-white flex flex-col">
+    <div class="px-8 py-6 border-b border-gray-700">
+        <h1 class="text-xl font-bold">Teacher Panel</h1>
+    </div>
+    <nav class="flex-1 px-4 py-4 space-y-2">
+        <a th:href="@{/teacher/dashboard}" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+            <i class="fas fa-tachometer-alt mr-3 w-5 text-center"></i> Dashboard
+        </a>
+        <a th:href="@{/teacher/attendance}" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+            <i class="fas fa-user-check mr-3 w-5 text-center"></i> Attendance
+        </a>
+
+        <a th:href="@{/teacher/grades}" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+            <i class="fas fa-marker mr-3 w-5 text-center"></i> Grades
+        </a>
+        <a th:href="@{/teacher/reset-password}" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+            <i class="fas fa-key mr-3 w-5 text-center"></i> Reset Password
+        </a>
+    </nav>
+    <div class="px-8 py-6 border-t border-gray-700">
+        <a th:href="@{/logout}" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+            <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i> Logout
+        </a>
+    </div>
+</div>

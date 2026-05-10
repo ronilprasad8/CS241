@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Attendance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/responsive.css}">
+</head>
+<body class="bg-gray-100">
+<div class="flex h-screen">
+    <div th:replace="~{fragments/teacher-sidebar :: sidebar}"></div>
+
+    <div class="flex-1 p-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Attendance</h1>
+        <h2 class="text-xl font-semibold text-gray-600 mb-4" th:text="${className}">Class Name</h2>
+
+        <div class="mb-6 flex items-center space-x-4">
+            <button id="prevDay" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
+                <
+            </button>
+            <input type="date" id="attendanceDate" name="date" th:value="${attendanceDate}" class="border border-gray-300 rounded px-3 py-2" />
+            <button id="nextDay" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">
+                >
+            </button>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <form th:action="@{/teacher/attendance}" method="post" id="attendanceForm">
+                <input type="hidden" name="date" th:value="${attendanceDate}" />
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="border-b">
+                            <th class="py-2">Student Name</th>
+                            <th class="text-center">Present</th>
+                            <th class="text-center">Absent</th>
+                            <th class="text-center">Late</th>
+                            <th class="text-center">Excused</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="student : ${students}" class="border-b">
+                            <td class="py-4" th:text="${student.firstName + ' ' + student.lastName}"></td>
+                            <td class="text-center">
+                                <input type="radio" th:name="'attendance-' + ${student.id}" value="PRESENT"
+                                    th:checked="${attendanceMap[student.id] == null or attendanceMap[student.id] == T(com.school.sas.entity.AttendanceStatus).PRESENT}" />
+                            </td>
+                            <td class="text-center">
+                                <input type="radio" th:name="'attendance-' + ${student.id}" value="ABSENT"
+                                    th:checked="${attendanceMap[student.id] == T(com.school.sas.entity.AttendanceStatus).ABSENT}" />
+                            </td>
+                            <td class="text-center">
+                                <input type="radio" th:name="'attendance-' + ${student.id}" value="LATE"
+                                    th:checked="${attendanceMap[student.id] == T(com.school.sas.entity.AttendanceStatus).LATE}" />
+                            </td>
+                            <td class="text-center">
+                                <input type="radio" th:name="'attendance-' + ${student.id}" value="EXCUSED"
+                                    th:checked="${attendanceMap[student.id] == T(com.school.sas.entity.AttendanceStatus).EXCUSED}" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="mt-6">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+                        Save Attendance
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const attendanceDateInput = document.getElementById('attendanceDate');
+    const prevDayBtn = document.getElementById('prevDay');
+    const nextDayBtn = document.getElementById('nextDay');
+    const attendanceForm = document.getElementById('attendanceForm');
+
+    function changeDate(days) {
+        const currentDate = new Date(attendanceDateInput.value);
+        currentDate.setDate(currentDate.getDate() + days);
+        attendanceDateInput.valueAsDate = currentDate;
+        attendanceForm.submit();
+    }
+
+    prevDayBtn.addEventListener('click', () => changeDate(-1));
+    nextDayBtn.addEventListener('click', () => changeDate(1));
+    attendanceDateInput.addEventListener('change', () => attendanceForm.submit());
+</script>
+
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+<div class="flex h-screen">
+    <div th:replace="~{fragments/admin-sidebar :: sidebar}"></div>
+
+    <div class="flex-1 p-8 overflow-y-auto">
+        <a th:href="@{/admin/students}" class="text-blue-600 hover:text-blue-800 mb-6 inline-block">
+            &larr; Back to Student List
+        </a>
+
+        <div class="bg-white rounded-lg shadow-md">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8 px-6" aria-label="Tabs">
+                    <a href="#profile" class="tab-link border-blue-500 text-blue-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="profile">Profile</a>
+                    <a href="#grades" class="tab-link border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="grades">Grades</a>
+                    <a th:href="@{'/admin/students/attendance/' + ${student.id}}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Attendance</a>
+                    <a href="#behaviour" class="tab-link border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="behaviour">Behaviour Record</a>
+                    <a href="#parents" class="tab-link border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="parents">Parents/Guardian</a>
+                </nav>
+            </div>
+
+            <div class="tab-content p-6" id="profile" th:object="${student}">
+                <div class="flex items-start space-x-6">
+                    <div class="w-40 h-40 bg-gray-200 rounded flex items-center justify-center text-gray-400">
+                        <i class="fas fa-user fa-3x"></i>
+                    </div>
+                    <div class="flex-1 space-y-1">
+                        <p><span class="font-semibold">Student ID:</span> <span th:text="*{indexNumber}"></span></p>
+                        <p><span class="font-semibold">Name:</span> <span th:text="*{firstName + ' ' + lastName}"></span></p>
+                        <p><span class="font-semibold">DOB:</span> <span th:text="*{dateOfBirth != null ? #temporals.format(dateOfBirth, 'dd/MM/yyyy') : 'N/A'}"></span></p>
+                        <p><span class="font-semibold">Gender:</span> <span th:text="*{gender}"></span></p>
+                        <p><span class="font-semibold">Citizenship:</span> <span th:text="*{citizenship}"></span></p>
+                        <a th:href="@{/admin/students/edit/{id}(id=${student.id})}" class="mt-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded text-sm inline-block">Edit</a>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">Active Enrollment</h3>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div><p class="font-semibold">Year:</p> <span th:text="*{schoolClass?.yearLevel}"></span></div>
+                        <div><p class="font-semibold">Stream:</p> <span th:text="*{schoolClass?.streamName}"></span></div>
+                        <div><p class="font-semibold">Class Teacher:</p> <span th:text="*{schoolClass?.formTeacher != null ? schoolClass.formTeacher.firstName + ' ' + schoolClass.formTeacher.lastName : 'N/A'}"></span></div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">Enrolled Subjects</h3>
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50">
+                        <tr>
+                            <th class="p-4 font-medium">Subject</th>
+                            <th class="p-4 font-medium">Teacher</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="enrollment : ${enrollments}" class="border-t">
+                            <td class="p-4" th:text="${enrollment.subject.subjectName}"></td>
+                            <td class="p-4" th:text="${enrollment.subject.teacher != null ? enrollment.subject.teacher.firstName + ' ' + enrollment.subject.teacher.lastName : 'N/A'}"></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(enrollments)}">
+                            <td colspan="2" class="p-4 text-center text-gray-500">No subjects enrolled.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-content p-6 hidden" id="grades">
+                <h3 class="text-xl font-semibold mb-4 text-gray-800">Grades</h3>
+                <table class="w-full text-left">
+                    <thead class="bg-gray-50">
+                    <tr>
+                        <th class="p-4 font-medium">Subject</th>
+                        <th class="p-4 font-medium">Teacher</th>
+                        <th class="p-4 font-medium text-center">Exam Type</th>
+                        <th class="p-4 font-medium text-center">Marks</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="enrollment : ${enrollments}" class="border-t">
+                        <td class="p-4" th:text="${enrollment.subject.subjectName}"></td>
+                        <td class="p-4" th:text="${enrollment.subject.teacher != null ? enrollment.subject.teacher.firstName + ' ' + enrollment.subject.teacher.lastName : 'N/A'}"></td>
+                        <td class="p-4 text-center" th:text="${enrollment.examType}"></td>
+                        <td class="p-4 text-center">
+                            <span th:if="${enrollment.marksGained != null and enrollment.totalMarks != null}" th:text="${enrollment.marksGained + '/' + enrollment.totalMarks}"></span>
+                            <span class="text-gray-500" th:if="${enrollment.marksGained == null or enrollment.totalMarks == null}">Not graded</span>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(enrollments)}">
+                        <td colspan="4" class="p-4 text-center text-gray-500">No grades available.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tab-content p-6 hidden" id="attendance">
+                <h3 class="text-xl font-semibold mb-4 text-gray-800">Attendance</h3>
+                <p class="text-gray-500">Attendance records will be displayed here.</p>
+            </div>
+
+            <div class="tab-content p-6 hidden" id="behaviour">
+                <h3 class="text-xl font-semibold mb-4 text-gray-800">Behaviour Record</h3>
+                <p class="text-gray-500">Behaviour records will be displayed here.</p>
+            </div>
+
+            <div class="tab-content p-6 hidden" id="parents">
+                <h3 class="text-xl font-semibold mb-4 text-gray-800">Parents/Guardian</h3>
+                <p class="text-gray-700" th:text="${student.parentGuardian != null and !student.parentGuardian.isEmpty()} ? student.parentGuardian : 'No parent/guardian information available.'"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const tabId = this.getAttribute('data-tab');
+
+                // Remove active classes
+                tabLinks.forEach(l => {
+                    l.classList.remove('border-blue-500', 'text-blue-600');
+                    l.classList.add('border-transparent', 'text-gray-500');
+                });
+
+                // Hide all tab contents
+                tabContents.forEach(content => content.classList.add('hidden'));
+
+                // Activate clicked tab
+                this.classList.remove('border-transparent', 'text-gray-500');
+                this.classList.add('border-blue-500', 'text-blue-600');
+
+                // Show corresponding content
+                document.getElementById(tabId).classList.remove('hidden');
+            });
+        });
+    });
+</script>
+</body>
+</html>

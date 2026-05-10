@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Assign Subject</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+<div class="flex h-screen">
+    <div th:replace="~{fragments/admin-sidebar :: sidebar}"></div>
+
+    <div class="flex-1 p-8 overflow-y-auto">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Assign Subject to Teacher</h1>
+        <div class="bg-white rounded-lg shadow-lg p-8 max-w-lg mx-auto">
+            <form th:action="@{/admin/subjects/assign}" method="post">
+                <div class="mb-6">
+                    <label for="teacherId" class="block text-gray-700 text-sm font-bold mb-2">Select Teacher *</label>
+                    <select name="teacherId" id="teacherId" required class="shadow-sm border rounded w-full py-2 px-3">
+                        <option value="">-- Select a Teacher --</option>
+                        <option th:each="teacher : ${teachers}"
+                                th:value="${teacher.id}"
+                                th:text="${teacher.firstName + ' ' + teacher.lastName}"></option>
+                    </select>
+                </div>
+
+                <div class="mb-6">
+                    <label for="year-select" class="block text-gray-700 text-sm font-bold mb-2">Filter Subjects by Year Level</label>
+                    <select id="year-select" class="shadow-sm border rounded w-full py-2 px-3">
+                        <option value="">-- Select a Year --</option>
+                        <option th:each="entry : ${yearStreamMap}" th:value="${entry.key}" th:text="${entry.key}"></option>
+                    </select>
+                </div>
+
+                <div class="mb-6">
+                    <label for="stream-select" class="block text-gray-700 text-sm font-bold mb-2">Filter by Stream (Optional)</label>
+                    <select id="stream-select" name="stream" class="shadow-sm border rounded w-full py-2 px-3" disabled>
+                        <option value="">-- Select a Year First --</option>
+                    </select>
+                </div>
+
+                <div class="mb-6">
+                    <label for="subjectId" class="block text-gray-700 text-sm font-bold mb-2">Select Subject *</label>
+                    <select name="subjectId" id="subjectId" required class="shadow-sm border rounded w-full py-2 px-3" disabled>
+                        <option value="">-- Select a Year First --</option>
+                    </select>
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg">
+                        Assign Subject
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const yearStreamMap = /*[[${yearStreamMap}]]*/ {};
+    const subjectsByYear = /*[[${subjectsByYear}]]*/ {};
+
+    const yearSelect = document.getElementById('year-select');
+    const streamSelect = document.getElementById('stream-select');
+    const subjectSelect = document.getElementById('subjectId');
+
+    yearSelect.addEventListener('change', () => {
+        const year = yearSelect.value;
+
+        // Update Stream options
+        streamSelect.innerHTML = '<option value="">-- Select a Stream --</option>';
+        if (year && yearStreamMap[year]) {
+            streamSelect.disabled = false;
+            yearStreamMap[year].forEach(stream => {
+                const option = document.createElement('option');
+                option.value = stream;
+                option.text = stream;
+                streamSelect.appendChild(option);
+            });
+        } else {
+            streamSelect.disabled = true;
+        }
+
+        // Update Subject options
+        subjectSelect.innerHTML = '<option value="">-- Select a Subject --</option>';
+        if (year && subjectsByYear[year]) {
+            subjectSelect.disabled = false;
+            subjectsByYear[year].forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject.id;
+                option.text = subject.subjectName;
+                subjectSelect.appendChild(option);
+            });
+        } else {
+            subjectSelect.disabled = true;
+        }
+    });
+    /*]]>*/
+</script>
+
+</body>
+</html>

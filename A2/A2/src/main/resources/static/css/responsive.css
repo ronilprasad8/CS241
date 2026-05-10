@@ -1,0 +1,235 @@
+/* Responsive styles for the SAS application */
+
+/* Mobile styles (max-width: 640px) */
+@media (max-width: 640px) {
+    /* Sidebar adjustments: Make sidebar full-width and stack vertically on mobile */
+    .sidebar {
+        width: 100%;
+        position: relative;
+        height: auto;
+    }
+
+    /* Main content: Reduce padding for smaller screens */
+    .main-content {
+        padding: 1rem;
+    }
+
+    /* Grid layouts: Stack items vertically on mobile */
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    /* Typography: Smaller font sizes for mobile */
+    .text-3xl {
+        font-size: 1.5rem;
+        line-height: 2rem;
+    }
+
+    .text-lg {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    /* Buttons and forms: Full width on mobile */
+    .btn, button, input, select {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Hide or adjust navigation elements if needed */
+    .nav-item {
+        display: block;
+        text-align: center;
+    }
+
+    /* Flex container adjustments */
+    .flex.h-screen {
+        flex-direction: column;
+        height: auto;
+    }
+
+    /* Sidebar specific adjustments */
+    .w-64 {
+        width: 100%;
+    }
+
+    /* Main content area */
+    .flex-1 {
+        width: 100%;
+    }
+
+    /* Calendar grid adjustments */
+    .grid.grid-cols-7 {
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.25rem;
+    }
+
+    .h-12 {
+        height: 2rem;
+    }
+
+    /* Statistics grid */
+    .grid.grid-cols-2.md\\:grid-cols-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Tablet styles (min-width: 641px and max-width: 1024px) */
+@media (min-width: 641px) and (max-width: 1024px) {
+    /* Sidebar: Fixed width, but adjust if needed */
+    .sidebar {
+        width: 200px;
+    }
+
+    /* Main content: Moderate padding */
+    .main-content {
+        padding: 2rem;
+    }
+
+    /* Grid: Two columns on tablet */
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    /* Typography: Standard sizes */
+    .text-3xl {
+        font-size: 2rem;
+        line-height: 2.5rem;
+    }
+
+    .text-lg {
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+    }
+
+    /* Sidebar width adjustment */
+    .w-64 {
+        width: 200px;
+    }
+
+    /* Statistics grid */
+    .grid.grid-cols-2.md\\:grid-cols-4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Desktop styles (min-width: 1025px) */
+@media (min-width: 1025px) {
+    /* Sidebar: Standard width */
+    .sidebar {
+        width: 256px;
+    }
+
+    /* Main content: Full padding */
+    .main-content {
+        padding: 2rem;
+    }
+
+    /* Grid: Three columns as per Tailwind default */
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+
+    /* Typography: Full sizes */
+    .text-3xl {
+        font-size: 2.25rem;
+        line-height: 2.5rem;
+    }
+
+    .text-lg {
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+    }
+
+    /* Sidebar width */
+    .w-64 {
+        width: 256px;
+    }
+
+    /* Statistics grid */
+    .grid.grid-cols-2.md\\:grid-cols-4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* General responsive utilities */
+@media (max-width: 768px) {
+    /* Hide sidebars on very small screens or make them toggleable */
+    .sidebar {
+        display: none; /* Or use JavaScript for toggle */
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    /* Adjust flex layout for mobile */
+    .flex.h-screen {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .flex-1 {
+        width: 100%;
+    }
+}
+
+/* Ensure images and icons scale */
+img, .icon {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Flex adjustments for mobile */
+.flex {
+    flex-direction: column;
+}
+
+@media (min-width: 769px) {
+    .flex {
+        flex-direction: row;
+    }
+}
+
+/* Additional responsive adjustments for specific elements */
+@media (max-width: 640px) {
+    /* Adjust padding and margins */
+    .p-8 {
+        padding: 1rem;
+    }
+
+    .mb-8 {
+        margin-bottom: 2rem;
+    }
+
+    .mb-6 {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Button adjustments */
+    .px-4.py-2 {
+        padding: 0.5rem 1rem;
+    }
+
+    /* Icon adjustments */
+    .mr-3 {
+        margin-right: 0.5rem;
+    }
+
+    .w-5 {
+        width: 1rem;
+    }
+
+    /* Calendar adjustments */
+    .grid.grid-cols-7.gap-2 {
+        gap: 0.125rem;
+    }
+
+    /* Statistics adjustments */
+    .gap-4 {
+        gap: 1rem;
+    }
+}

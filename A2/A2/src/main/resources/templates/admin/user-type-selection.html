@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Select User Type</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+<div class="flex h-screen">
+    <div th:replace="~{fragments/admin-sidebar :: sidebar}"></div>
+    <div class="flex-1 p-8 overflow-y-auto">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Add New User</h1>
+        <div class="bg-white rounded-lg shadow-lg p-8 max-w-lg mx-auto text-center">
+            <h2 class="text-xl font-semibold mb-6">What type of user would you like to create?</h2>
+            <div class="flex justify-center space-x-6">
+                <a th:href="@{/admin/users/add-teacher}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg">
+                    Add a Teacher
+                </a>
+                <a th:href="@{/admin/users/add-student}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg">
+                    Add a Student
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

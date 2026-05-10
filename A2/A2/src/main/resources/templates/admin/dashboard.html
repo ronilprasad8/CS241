@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/responsive.css}">
+</head>
+<body class="bg-gray-100">
+<div class="flex h-screen">
+
+    <div th:replace="~{fragments/admin-sidebar :: sidebar}"></div>
+
+    <div class="flex-1 p-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Welcome, Admin!</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-1 gap-8">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <a th:href="@{/admin/users}" class="block text-gray-700 hover:text-blue-500">
+                    <h3 class="text-lg font-semibold mb-2">Manage Users</h3>
+                    <div class="h-40 bg-gray-200 rounded-md flex items-center justify-center">
+                        <i class="fas fa-users text-4xl text-gray-400"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

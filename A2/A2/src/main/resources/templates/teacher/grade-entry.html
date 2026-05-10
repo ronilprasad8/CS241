@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Enter Grades</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" th:href="@{/css/responsive.css}">
+</head>
+<body class="bg-gray-100">
+<div class="flex h-screen">
+    <div th:replace="~{fragments/teacher-sidebar :: sidebar}"></div>
+
+    <div class="flex-1 p-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Enter Grades</h1>
+        <h2 class="text-xl font-semibold text-gray-600 mb-2" th:text="${subject.subjectName}">Subject Name</h2>
+        <h3 class="text-lg text-gray-500 mb-8" th:text="'Year ' + ${subject.yearLevel}">Year Level</h3>
+
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <form th:action="@{/teacher/grades/save}" method="post">
+                <table class="w-full text-left">
+                    <thead>
+                    <tr class="border-b">
+                        <th class="py-2">Student Name</th>
+                        <th class="py-2">Exam Type</th>
+                        <th class="py-2">Marks Gained</th>
+                        <th class="py-2">Total Marks</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="enrollment : ${enrollments}" class="border-b">
+                        <td class="py-4" th:text="${enrollment.student.firstName + ' ' + enrollment.student.lastName}"></td>
+                        <td class="py-4">
+                            <input type="text" th:name="'examType-' + ${enrollment.id}" th:value="${enrollment.examType}"
+                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" placeholder="e.g., Midterm">
+                        </td>
+                        <td class="py-4">
+                            <input type="number" th:name="'marksGained-' + ${enrollment.id}" th:value="${enrollment.marksGained}"
+                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" placeholder="e.g., 85">
+                        </td>
+                        <td class="py-4">
+                            <input type="number" th:name="'totalMarks-' + ${enrollment.id}" th:value="${enrollment.totalMarks}"
+                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" placeholder="e.g., 100">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="mt-6">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+                        Save All Grades
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

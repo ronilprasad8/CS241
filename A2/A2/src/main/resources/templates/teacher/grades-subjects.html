@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Subject for Grading</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/responsive.css}">
+</head>
+<body class="bg-gray-100">
+<div class="flex h-screen">
+    <div th:replace="~{fragments/teacher-sidebar :: sidebar}"></div>
+
+    <div class="flex-1 p-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Select Subject to Grade</h1>
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <ul class="space-y-4">
+                <li th:each="subject : ${subjects}">
+                    <a th:href="@{/teacher/grades/{id}(id=${subject.id})}"
+                       class="block p-4 bg-gray-50 hover:bg-blue-100 rounded-lg transition-colors">
+                        <div class="font-semibold" th:text="${subject.subjectName}"></div>
+                        <div class="text-sm text-gray-600" th:text="'Year ' + ${subject.yearLevel}"></div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
